@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Zalo
+Comment=Zalo messaging client
+Exec=/opt/zalo/zalo --no-sandbox %U
+Icon=zalo
+StartupWMClass=Zalo
+StartupNotify=true
+MimeType=x-scheme-handler/zalo;
+Categories=Network;InstantMessaging;Chat;
+Keywords=Zalo;messenger;chat;Vietnam;
