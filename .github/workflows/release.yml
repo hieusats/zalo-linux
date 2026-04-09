@@ -1,0 +1,75 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        arch: [amd64, arm64]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential libsecret-1-dev libsqlite3-dev \
+            libgtk-3-0 libnotify4 libnss3 libxss1 \
+            dpkg-dev fakeroot
+
+      - name: Build native modules
+        run: |
+          cd build/app-extracted/native/nativelibs
+          npm install
+          npx @electron/rebuild --version=22.3.9
+
+      - name: Build .deb package
+        run: |
+          chmod +x scripts/build-deb.sh
+          bash scripts/build-deb.sh --arch ${{ matrix.arch }}
+
+      - name: Upload .deb artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: zalo-${{ matrix.arch }}.deb
+          path: build/zalo_*_${{ matrix.arch }}.deb
+          retention-days: 30
+
+  create-release:
+    needs: build-release
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download amd64 .deb
+        uses: actions/download-artifact@v4
+        with:
+          name: zalo-amd64.deb
+          path: /tmp/release
+
+      - name: Download arm64 .deb
+        uses: actions/download-artifact@v4
+        with:
+          name: zalo-arm64.deb
+          path: /tmp/release
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            /tmp/release/zalo_*.deb
+          generate_release_notes: true
+          draft: false
+          prerelease: ${{ contains(github.ref, 'rc') || contains(github.ref, 'beta') }}

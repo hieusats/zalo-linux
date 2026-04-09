@@ -1,0 +1,99 @@
+name: Build & Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        arch: [amd64, arm64]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential libsecret-1-dev libsqlite3-dev \
+            libgtk-3-0 libnotify4 libnss3 libxss1 \
+            dpkg-dev fakeroot
+
+      - name: Build native modules
+        run: |
+          cd build/app-extracted/native/nativelibs
+          npm install
+          npx @electron/rebuild --version=22.3.9
+
+      - name: Build .deb package
+        run: |
+          chmod +x scripts/build-deb.sh
+          bash scripts/build-deb.sh --arch ${{ matrix.arch }}
+
+      - name: Upload .deb artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: zalo-${{ matrix.arch }}.deb
+          path: build/zalo_*_${{ matrix.arch }}.deb
+          retention-days: 7
+
+  test:
+    needs: build
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        distro: [ubuntu-22.04, ubuntu-24.04]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download .deb
+        uses: actions/download-artifact@v4
+        with:
+          name: zalo-amd64.deb
+          path: /tmp/packages
+
+      - name: Run smoke test in Docker
+        run: |
+          DEB_PATH="/tmp/packages/zalo_amd64.deb"
+          docker build -f test/docker/Dockerfile.${{ matrix.distro }} -t zalo-test-${{ matrix.distro }} .
+          docker run --rm \
+            -e DEB_PATH="/packages/zalo.deb" \
+            -v "$DEB_PATH:/packages/zalo.deb:ro" \
+            -v "$(pwd)/test-results/${{ matrix.distro }}:/test-results" \
+            zalo-test-${{ matrix.distro }}
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-${{ matrix.distro }}
+          path: test-results/${{ matrix.distro }}/results.json
+
+  lint:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Install test dependencies
+        run: npm install
+
+      - name: Run native module tests
+        run: npx mocha --timeout 15000 test/native/**/*.test.js
+
+      - name: Run smoke tests
+        run: npx mocha --timeout 15000 test/smoke/**/*.test.js
+
+      - name: Run integration tests
+        run: npx mocha --timeout 20000 test/integration/**/*.test.js
