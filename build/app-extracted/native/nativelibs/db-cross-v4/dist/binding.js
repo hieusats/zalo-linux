@@ -1,11 +1,15 @@
 "use strict";
-// @ts-ignore
 let addon;
 if (process.platform === 'darwin') {
     addon = require(`../prebuilt/darwin/electron/${process.arch}/db-cross-v4-native.node`);
 }
 else if (process.platform === 'linux') {
-    addon = require(`../prebuilt/linux/electron/${process.arch}/db-cross-v4-native.node`);
+    try {
+        addon = require(`../prebuilt/linux/electron/${process.arch}/db-cross-v4-native.node`);
+    } catch (e) {
+        console.warn('db-cross-v4: Linux native binary not found, falling back to prebuilt darwin. Error:', e.message);
+        addon = require(`../prebuilt/darwin/electron/x64/db-cross-v4-native.node`);
+    }
 }
 else {
     if (process.arch === 'x64') {
