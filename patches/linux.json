@@ -40,8 +40,8 @@
     {
       "id": "T7h-sentry-platform",
       "file": "main-dist/sentry.js",
-      "search": "(case\"darwin\":return async function\\(\\)\\{const e=\\{kernel_version:\\(0,s\\.release\\)\\(\\),name:\"Mac OS X\")",
-      "replace": "$1};case\"linux\":return async function(){const e={kernel_version:(0,s.release)(),name:\"Linux\",version:(0,s.release)()}",
+      "search": "(case\"darwin\":return async function\\(\\)\\{const e=\\{kernel_version:s\\.release\\(\\),name:\"Mac OS X\")",
+      "replace": "$1};case\"linux\":return async function(){const e={kernel_version:s.release(),name:\"Linux\",version:s.release()}",
       "description": "Add linux case to Sentry platform info"
     },
     {
@@ -67,7 +67,7 @@
     },
     {
       "id": "T7l-crash-pending",
-      "file": "main-dist/main.js",
+      "file": "main-dist/sentry.js",
       "search": "\"darwin\"===process\\.platform&&n\\.push\\(\\(0,i\\.join\\)\\(e,\"pending\"\\)\\)",
       "replace": "(\"darwin\"===process.platform||\"linux\"===process.platform)&&n.push((0,i.join)(e,\"pending\"))",
       "description": "Add linux to crash reporter pending check"
