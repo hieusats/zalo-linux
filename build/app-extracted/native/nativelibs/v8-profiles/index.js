@@ -6,6 +6,19 @@ http://travis-ci.org/RisingStack/v8-profiler
 v8-profiler provides [node](http://github.com/ry/node) bindings for the v8
 profiler and integration with [node-inspector](http://github.com/dannycoates/node-inspector)
 */
+
+if (process.platform === 'linux') {
+  var profiler = {
+    profiles: [],
+    startProfiling: function(name, recsamples) {},
+    stopProfiling: function(name) { return null; },
+    setSamplingInterval: function(num) {},
+    deleteAllProfiles: function() {}
+  };
+  module.exports = profiler;
+  process.profiler = profiler;
+} else {
+
 var binding = process.platform === 'win32' ? (process.arch === 'ia32' ? require('./profiler_electron1.8_win32_ia32.node') : require('./profiler_electron1.8_win32_x64.node')) : require('./profiler_electron1.8_mac.node')
 
 function CpuProfile() {}
@@ -84,3 +97,4 @@ var profiler = {
 
 module.exports = profiler;
 process.profiler = profiler;
+}
