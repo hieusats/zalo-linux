@@ -1,0 +1,8 @@
+node_modules/
+build/electron-*/
+build/zalo-*/
+build/*.asar
+build/app-extracted/
+*.log
+.DS_Store
+.env

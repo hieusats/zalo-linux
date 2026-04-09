@@ -1,0 +1,18 @@
+{
+  "name": "zalo-linux-port",
+  "version": "26.3.20",
+  "private": true,
+  "description": "Linux .deb build tooling for Zalo PC v26.3.20",
+  "scripts": {
+    "download-electron": "bash scripts/download-electron.sh",
+    "extract-dmg": "bash scripts/extract-dmg.sh",
+    "extract-asar": "bash scripts/extract-asar.sh",
+    "repack-asar": "bash scripts/repack-asar.sh",
+    "launch": "bash electron-launcher.sh",
+    "extract:all": "bash scripts/extract-dmg.sh && bash scripts/extract-asar.sh",
+    "test:smoke": "bash test/smoke-test.sh"
+  },
+  "devDependencies": {
+    "@electron/asar": "^3.2.9"
+  }
+}
