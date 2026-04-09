@@ -13,6 +13,8 @@
     "test:smoke": "bash test/smoke-test.sh"
   },
   "devDependencies": {
-    "@electron/asar": "^3.2.9"
+    "@electron/asar": "^3.2.9",
+    "chai": "^6.2.2",
+    "mocha": "^11.7.5"
   }
 }
