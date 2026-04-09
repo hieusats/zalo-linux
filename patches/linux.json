@@ -1,0 +1,76 @@
+{
+  "version": "1.0.0",
+  "description": "Patches to make Zalo v26.3.20 app.asar work on Linux",
+  "patches": [
+    {
+      "id": "T7a-dock-badge",
+      "file": "main-dist/main.js",
+      "search": "h\\.dock\\.setBadge\\([^)]*\\)",
+      "replace": "(process.platform==='linux'?h.setBadgeCount(0):void 0)",
+      "description": "Replace macOS dock badge with Electron setBadgeCount"
+    },
+    {
+      "id": "T7a-dock-bounce",
+      "file": "main-dist/main.js",
+      "search": "h\\.dock\\.bounce\\([^)]*\\)",
+      "replace": "void 0",
+      "description": "No-op dock bounce on Linux"
+    },
+    {
+      "id": "T7b-launchagent-path",
+      "file": "main-dist/main.js",
+      "search": "~/Library/LaunchAgents/",
+      "replace": "~/.config/autostart/",
+      "description": "Replace LaunchAgent path with XDG autostart"
+    },
+    {
+      "id": "T7b-osascript",
+      "file": "main-dist/main.js",
+      "search": "\"osascript\"",
+      "replace": "\"xdg-open\"",
+      "description": "Replace AppleScript with xdg-open stub"
+    },
+    {
+      "id": "T7d-fixmacexecpath",
+      "file": "main-dist/main.js",
+      "search": "fixMacExecPath",
+      "replace": "(function(){return process.execPath})",
+      "description": "Bypass .app bundle path reconstruction"
+    },
+    {
+      "id": "T7h-sentry-platform",
+      "file": "main-dist/sentry.js",
+      "search": "(case\"darwin\":return async function\\(\\)\\{const e=\\{kernel_version:\\(0,s\\.release\\)\\(\\),name:\"Mac OS X\")",
+      "replace": "$1};case\"linux\":return async function(){const e={kernel_version:(0,s.release)(),name:\"Linux\",version:(0,s.release)()}",
+      "description": "Add linux case to Sentry platform info"
+    },
+    {
+      "id": "T7m-auto-updater-instance",
+      "file": "main-dist/main.js",
+      "search": "\"darwin\"===process\\.platform\\?new\\(n\\(\"s8mH\"\\)\\.MacUpdater\\):new\\(n\\(\"c7YD\"\\)\\.AppImageUpdater\\)",
+      "replace": "null",
+      "description": "Null out macOS/AppImage auto-updater instantiation"
+    },
+    {
+      "id": "T7g-activate-event",
+      "file": "main-dist/main.js",
+      "search": "d\\.on\\(\"activate\",",
+      "replace": "if(process.platform==='darwin')d.on(\"activate\",",
+      "description": "Guard activate event with darwin check"
+    },
+    {
+      "id": "T7i-restart",
+      "file": "main-dist/main.js",
+      "search": "\"darwin\"===process\\.platform\\?Me\\.zsymb\\(18,\"PWjCCs\",\"This function support window environm",
+      "replace": "(\"darwin\"===process.platform||\"linux\"===process.platform)?Me.zsymb(18,\"PWjCCs\",\"This function support window environm",
+      "description": "Enable restart function on Linux"
+    },
+    {
+      "id": "T7l-crash-pending",
+      "file": "main-dist/main.js",
+      "search": "\"darwin\"===process\\.platform&&n\\.push\\(\\(0,i\\.join\\)\\(e,\"pending\"\\)\\)",
+      "replace": "(\"darwin\"===process.platform||\"linux\"===process.platform)&&n.push((0,i.join)(e,\"pending\"))",
+      "description": "Add linux to crash reporter pending check"
+    }
+  ]
+}
