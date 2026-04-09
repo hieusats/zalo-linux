@@ -1,0 +1,16 @@
+FROM fedora:39
+
+RUN dnf install -y \
+    gtk3 libnotify nss libXScrnSaver libsecret \
+    libgbm alsa-lib at-spi2-atk libX11-xcb \
+    libxcb libdrm libxkbcommon cups-libs dbus-libs \
+    libXcomposite libXdamage libXrandr libXfixes libXext \
+    libXi libXtst ca-certificates \
+    gnome-keyring xorg-x11-server-Xvfb \
+    curl jq && \
+    dnf clean all
+
+COPY scripts/docker-smoke-test.sh /docker-smoke-test.sh
+RUN chmod +x /docker-smoke-test.sh
+
+ENTRYPOINT ["/docker-smoke-test.sh"]
