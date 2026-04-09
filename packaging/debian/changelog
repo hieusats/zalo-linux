@@ -1,0 +1,5 @@
+zalo (26.3.20-1) unstable; urgency=medium
+
+  * Initial Linux .deb packaging from macOS Electron app
+
+ -- Zalo Linux Port <zalo-linux@example.com>  Thu, 09 Apr 2026 00:00:00 +0000

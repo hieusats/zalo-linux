@@ -1,0 +1,21 @@
+Source: zalo
+Section: net
+Priority: optional
+Maintainer: Zalo Linux Port <zalo-linux@example.com>
+Build-Depends: debhelper (>= 11)
+Standards-Version: 4.5.1
+Homepage: https://zalo.me/
+
+Package: zalo
+Architecture: amd64
+Depends: libgtk-3-0, libnotify4, libnss3, libxss1, libsecret-1-0,
+         libgbm1, libasound2, libatspi2.0-0, libx11-xcb1,
+         libxcb-dri3-0, libdrm2, libxkbcommon0,
+         libcups2, libdbus-1-3, libexpat1, libxcomposite1,
+         libxdamage1, libxrandr2, libxfixes3, libxext6,
+         libxi6, libxtst6, ca-certificates, ${shlibs:Depends}, ${misc:Depends}
+Recommends: gnome-keyring | kwalletmanager
+Suggests: libappindicator3-1
+Description: Zalo messaging client for Linux
+ Zalo is a popular Vietnamese messaging application.
+ This package provides the Linux desktop client.

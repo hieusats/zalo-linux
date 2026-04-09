@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+case "$1" in
+    configure)
+        update-desktop-database /usr/share/applications/ 2>/dev/null || true
+        gtk-update-icon-cache -f /usr/share/icons/hicolor/ 2>/dev/null || true
+        xdg-mime default zalo.desktop x-scheme-handler/zalo 2>/dev/null || true
+        ;;
+esac
+exit 0
