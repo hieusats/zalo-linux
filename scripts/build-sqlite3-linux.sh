@@ -5,7 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 NATIVE_DIR="$PROJECT_ROOT/build/app-extracted/native/nativelibs/sqlite3"
 ELECTRON_VERSION="22.3.9"
-ELECTRON_HEADERS_DIR="$PROJECT_ROOT/build/electron-headers"
+ELECTRON_HEADERS_DIR="$PROJECT_ROOT/.cache/electron-headers"
 NODE_VERSION="16.17.1"
 
 echo "=== Building sqlite3 for Linux ==="
