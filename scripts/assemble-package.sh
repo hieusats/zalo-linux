@@ -40,8 +40,9 @@ done
 
 [ -d "$ELECTRON_DIR/locales" ] && { cp -r "$ELECTRON_DIR/locales" "$OUTPUT_DIR/opt/zalo/"; find "$OUTPUT_DIR/opt/zalo/locales" -type f -exec chmod 0644 {} \;; }
 [ -d "$ELECTRON_DIR/swiftshader" ] && { cp -r "$ELECTRON_DIR/swiftshader" "$OUTPUT_DIR/opt/zalo/"; find "$OUTPUT_DIR/opt/zalo/swiftshader" -type f -exec chmod 0755 {} \;; }
-
-[ -f "$ELECTRON_DIR/resources/electron.asar" ] && cp "$ELECTRON_DIR/resources/electron.asar" "$OUTPUT_DIR/opt/zalo/resources/"
+# NOTE: Do NOT copy electron.asar or default_app.asar into the installed package.
+# Electron finds app.asar via resources/app.asar relative to the binary.
+# Copying default_app.asar as electron.asar can interfere with app loading.
 
 mkdir -p "$OUTPUT_DIR/opt/zalo/resources"
 cp "$APP_ASAR" "$OUTPUT_DIR/opt/zalo/resources/app.asar"
