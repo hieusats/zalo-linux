@@ -19,9 +19,6 @@ function init() {
 	if (!isInit) {
 		isInit = true;
 		getOS();
-		if (!os) {
-			console.warn('[zimage] No native binary for platform:', process.platform, process.arch);
-		}
 	}
 }
 

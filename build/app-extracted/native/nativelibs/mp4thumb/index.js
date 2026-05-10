@@ -2,15 +2,6 @@
 let CachedModule = {};
 
 function getLib() {
-    if (process.platform === 'linux') {
-        return {
-            generateThumbnail: async () => {
-                throw { error: 'LIB_ERR', message: 'mp4thumb not supported on Linux' };
-            },
-            cancel: () => {}
-        };
-    }
-
     let thumbModule = null;
     try {
         if(process.platform === 'win32') {

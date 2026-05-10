@@ -32,28 +32,11 @@ function getPlatformPath() {
         default:
           throw new Error(`Unsupported architecture on macOS: ${arch}`)
       }
-    case 'linux':
-      return null
     default:
       throw new Error(`Unsupported OS: ${platform}, architecture: ${arch}`)
   }
 }
 
-if (platform === 'linux') {
-  nativeBinding = {
-    getDirectorySizeSync: () => ({ error: 'not support', platform: 'linux' }),
-    getDirectorySizeAsync: () => Promise.reject(new Error('file-utilities not supported on Linux')),
-    detectHardlinksSync: () => ({ error: 'not support', platform: 'linux' }),
-    detectHardlinksAsync: () => Promise.reject(new Error('file-utilities not supported on Linux')),
-    detectFilesystemSync: () => ({ error: 'not support', platform: 'linux' }),
-    detectFilesystemAsync: () => Promise.reject(new Error('file-utilities not supported on Linux')),
-    getDirectorySizeByGlobSync: () => ({ error: 'not support', platform: 'linux' }),
-    getDirectorySizeByGlobAsync: () => Promise.reject(new Error('file-utilities not supported on Linux')),
-    getDirectorySizeTreeSync: () => ({ error: 'not support', platform: 'linux' }),
-    getDirectorySizeTreeAsync: () => Promise.reject(new Error('file-utilities not supported on Linux')),
-    cancelJob: () => {},
-  }
-} else {
 try {
   const bindingPath = getPlatformPath()
   if (existsSync(bindingPath)) {
@@ -70,7 +53,6 @@ if (!nativeBinding) {
     throw loadError
   }
   throw new Error(`Failed to load native binding`)
-}
 }
 
 const { 

@@ -1,33 +1,3 @@
-if (process.platform === 'linux') {
-  module.exports = {
-    bindCanvas: () => { throw { error: 'NOT_SUPPORT', message: 'VoIP not supported on Linux' }; },
-    stop: () => {},
-    bindCallbackEventMessage: () => {},
-    checkEventMessage: () => {},
-    render: () => {},
-    startRender: () => {},
-    getActiveAudioCodecs: () => [],
-    holdAudio: () => {},
-    mute: () => {},
-    stopCapture: () => {},
-    getCallInfo: () => null,
-    getJsonStats406: () => ({}),
-    changeAudioDevice: () => {},
-    setAudioVolume: () => {},
-    changeVideoDevice: () => {},
-    setAgc: () => {},
-    startDesktopCapture: () => {},
-    stopDesktopCapture: () => {},
-    changeMinMaxMobileBitrate: () => {},
-    getExtendData: () => null,
-    getListDevices: () => [],
-    testConnect: () => {},
-    updateCallerInfo: () => {},
-    incomingCall: () => Promise.reject(new Error('VoIP not supported on Linux')),
-    makeCall: () => Promise.reject(new Error('VoIP not supported on Linux')),
-  };
-} else {
-
 var VCMac = require('./vcmac.js');
 var ZScreenObject = require('./screen-object.js');
 var ZScreenCanvasObject = require('./screen-object-canvas.js');
@@ -249,4 +219,3 @@ class ZVCMac{
 }
 const instance = new ZVCMac();
 module.exports = instance;
-}

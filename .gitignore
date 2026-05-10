@@ -3,6 +3,8 @@ build/electron-*/
 build/zalo-*/
 build/*.asar
 build/app-extracted/
+build/native/
+build/app.asar.unpacked/
 !build/app-extracted/native/nativelibs/
 !build/app-extracted/native/nativelibs/**/binding/
 !build/app-extracted/native/nativelibs/**/prebuilt/
@@ -12,6 +14,7 @@ build/app-extracted/
 !build/app-extracted/native/nativelibs/**/*.gyp
 !build/app-extracted/native/nativelibs/**/*.node
 !build/app-extracted/native/nativelibs/**/*.cpp
+.cache/
 *.log
 .DS_Store
 .env

@@ -4,7 +4,7 @@ var instance = module.exports = {
         return require('./file-utils/index.js');
     },
     winUtils : ()=>{    	
-    	try{return require('./win-utils/index.js')}catch(e){return{}}
+    	return require('./win-utils/index.js');
     },
     zcall : ()=>{
     	return require('./zcall/index.js');

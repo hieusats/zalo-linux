@@ -9,12 +9,6 @@ function getLib(){
     } else {
       return require('./darwin/file-utils.node');
     }
-  } else if (process.platform === 'linux') {
-    return {
-      error: 'not support',
-      platform: 'linux',
-      message: 'file-utils is not available on Linux'
-    };
   } else {
     return {error: 'not support'};
   }
